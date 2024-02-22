@@ -38,6 +38,12 @@ const getBookmarks = async (sendResponse) => {
 
 const createBookmark = async (sendResponse) => {
 	const { idToken } = await setToken();
+
+	const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+	chrome.tabs.sendMessage(tab.id, { type: 'get-og-image'}, (res) => {
+		console.log(res.ogImage);
+	})
+
 	chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
 		const data = {
 			bookmark: {
