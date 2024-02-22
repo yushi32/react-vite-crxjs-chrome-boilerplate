@@ -1,5 +1,6 @@
 const getOgImage = async (sendResponse) => {
-  const ogImage = document.querySelector('meta[property="og:image"]').getAttribute('content');
+  const metaOgImage = document.querySelector('meta[property="og:image"]');
+  const ogImage = metaOgImage ? metaOgImage.getAttribute('content') : null;
   sendResponse({ ogImage });
 };
 
