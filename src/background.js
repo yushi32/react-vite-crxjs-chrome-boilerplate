@@ -38,12 +38,13 @@ const getBookmarks = async (sendResponse) => {
 
 const createBookmark = async (sendResponse) => {
 	const { idToken } = await setToken();
-	chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
+
+	const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+	chrome.tabs.sendMessage(tab.id, { type: 'get-og-image'}, async (ogResponse) => {
 		const data = {
-			bookmark: {
-				url: tabs[0].url,
-				title: tabs[0].title
-			}
+			url: tab.url,
+			title: tab.title,
+			thumbnail: ogResponse.ogImage,
 		};
 		const config = {
 			method: 'POST',
@@ -54,14 +55,14 @@ const createBookmark = async (sendResponse) => {
 			},
     	body: JSON.stringify(data)
 		};
-		const res = await fetch(`${API_URL}/api/v1/bookmarks`, config);
-		const json = await res.json();
+		const fetchResponse = await fetch(`${API_URL}/api/v1/bookmarks`, config);
+		const json = await fetchResponse.json();
 		if (json.bookmark) {
 			sendResponse( { result: true } );
 		} else {
 			sendResponse( { result: false } );
 		}
-	});
+	})
 };
 
 const checkDuplicate = async (sendResponse, user) => {
