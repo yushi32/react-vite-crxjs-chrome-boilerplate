@@ -16,14 +16,13 @@ export default function Header() {
   return (
     <div className="sticky top-0 h-12 w-full bg-white border-b-2">
       <div className="flex justify-between items-center h-full px-2">
-        <a href='' onClick={onClickHandler} className="flex items-center justify-between bg-emerald-400 p-1">
+        <a href='' onClick={onClickHandler}>
           <img
             src={Logo}
             alt="Logo"
-            width={30}
-            height={30}
+            width={120}
+            height={36}
           />
-          <span className="text-xl">Laterless</span>
         </a>
         <div className="">
           {user ? <LogoutButton /> : <LoginButton />}
